@@ -2747,7 +2747,8 @@
 					display: block;
 					margin: 0 auto;
 					border-radius: 50%;
-					box-shadow: 0 0 0 1.5em #ffffff;
+					box-shadow: 0px 0px 0px 3px rgba(255,255,255,1);
+					/* box-shadow: 0 0 0 1.5em #ffffff; */
 				}
 
 				#header .avatar:before {
