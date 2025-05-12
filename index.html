@@ -33,13 +33,20 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
-      opacity: 0;
-      animation: fadeIn 1.2s ease forwards;
+      overflow-x: hidden;
     }
 
-    @keyframes fadeIn {
+    .content-wrapper {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeSlideUp 1.2s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes fadeSlideUp {
       to {
         opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -109,23 +116,25 @@
 
 <body>
 
-  <div class="avatar">
-    <img src="images/avatar.jpg" alt="Photo of Joffre Q">
+  <div class="content-wrapper">
+    <div class="avatar">
+      <img src="images/avatar.jpg" alt="Photo of Joffre Q">
+    </div>
+
+    <h1>Joffre Q.</h1>
+    <p>Senior Security Engineer | Fiction Writer | Dog Lover</p>
+
+    <div class="links">
+      <a href="https://www.tecknicos.com" target="_blank" rel="noopener noreferrer">Tecknicos</a> |
+      <a href="https://www.effectual.com/" target="_blank" rel="noopener noreferrer">Effectual</a>
+    </div>
+
+    <button class="toggle-mode" onclick="toggleMode()">Toggle Light/Dark Mode</button>
+
+    <footer>
+      &copy; 2025 Joffre Q. | Designed with ❤️
+    </footer>
   </div>
-
-  <h1>Joffre Q.</h1>
-  <p>Senior Security Engineer | Fiction Writer | Dog Lover</p>
-
-  <div class="links">
-    <a href="https://www.tecknicos.com" target="_blank" rel="noopener noreferrer">Tecknicos</a> |
-    <a href="https://www.effectual.com/" target="_blank" rel="noopener noreferrer">Effectual</a>
-  </div>
-
-  <button class="toggle-mode" onclick="toggleMode()">Toggle Light/Dark Mode</button>
-
-  <footer>
-    &copy; 2025 Joffre Q. 
-  </footer>
 
   <script>
     function toggleMode() {
