@@ -55,9 +55,15 @@
       margin-bottom: 0.5rem;
     }
 
+    .typing {
+      font-size: 1.4rem;
+      margin-top: 0.3rem;
+      height: 1.8rem;
+    }
+
     p {
       font-size: 1.2rem;
-      margin-top: 0;
+      margin-top: 1.5rem;
     }
 
     .avatar {
@@ -122,7 +128,9 @@
     </div>
 
     <h1>Joffre Q.</h1>
-    <p>Senior Security Engineer | Fiction Writer | Dog Lover</p>
+    <div class="typing" id="typing"></div>
+
+    <p>Based in New York City</p>
 
     <div class="links">
       <a href="https://www.tecknicos.com" target="_blank" rel="noopener noreferrer">Tecknicos</a> |
@@ -140,6 +148,40 @@
     function toggleMode() {
       document.body.classList.toggle('light');
     }
+
+    // Typing Effect
+    const phrases = ["Senior Security Engineer", "Fiction Writer", "Dog Enthusiast"];
+    const typingElement = document.getElementById("typing");
+    let currentPhraseIndex = 0;
+    let currentLetterIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+
+    function type() {
+      const currentPhrase = phrases[currentPhraseIndex];
+      if (isDeleting) {
+        typingElement.textContent = currentPhrase.substring(0, currentLetterIndex--);
+      } else {
+        typingElement.textContent = currentPhrase.substring(0, currentLetterIndex++);
+      }
+
+      if (!isDeleting && currentLetterIndex === currentPhrase.length) {
+        isDeleting = true;
+        typingSpeed = 1500; // Pause before deleting
+      } else if (isDeleting && currentLetterIndex === 0) {
+        isDeleting = false;
+        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+        typingSpeed = 200; // Pause before typing next
+      } else {
+        typingSpeed = isDeleting ? 50 : 100;
+      }
+
+      setTimeout(type, typingSpeed);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(type, 500); // Initial delay
+    });
   </script>
 
 </body>
