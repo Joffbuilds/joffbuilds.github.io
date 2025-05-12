@@ -61,7 +61,7 @@
       overflow: hidden;
       margin-bottom: 1rem;
       border: 3px solid var(--accent-color);
-      flex-shrink: 0; /* NEW */
+      flex-shrink: 0;
     }
 
     .avatar img {
@@ -77,14 +77,14 @@
 
     .typing {
       font-size: 1.4rem;
-      height: 2rem; /* Reserve the height */
+      height: 2rem;
       margin-bottom: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       white-space: nowrap;
-      flex-shrink: 0; /* NEW */
+      flex-shrink: 0;
     }
 
     p {
@@ -128,6 +128,17 @@
       font-size: 0.8rem;
       color: var(--footer-color);
     }
+
+    /* Cursor Animations */
+    @keyframes blink-fast {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes blink-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
   </style>
 </head>
 
@@ -155,64 +166,63 @@
     </footer>
   </div>
 
-<script>
-  function toggleMode() {
-    document.body.classList.toggle('light');
-  }
-
-  const phrases = ["Senior Security Engineer", "Fiction Writer", "Dog Enthusiast"];
-  const typingElement = document.getElementById("typing");
-  let currentPhraseIndex = 0;
-  let currentLetterIndex = 0;
-  let isDeleting = false;
-  let typingSpeed = 100;
-
-  // Create and style the blinking cursor
-  const cursor = document.createElement("span");
-  cursor.textContent = " |"; // Space before for breathing room
-  cursor.style.animation = "blink 1s infinite";
-  typingElement.appendChild(cursor);
-
-  function type() {
-    const currentPhrase = phrases[currentPhraseIndex];
-
-    if (!isDeleting && currentLetterIndex <= currentPhrase.length) {
-      typingElement.firstChild.textContent = currentPhrase.substring(0, currentLetterIndex++);
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle('light');
     }
 
-    if (isDeleting && currentLetterIndex >= 0) {
-      typingElement.firstChild.textContent = currentPhrase.substring(0, currentLetterIndex--);
+    const phrases = ["Senior Security Engineer", "Fiction Writer", "Dog Enthusiast"];
+    const typingElement = document.getElementById("typing");
+
+    let currentPhraseIndex = 0;
+    let currentLetterIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 80; // Faster typing speed
+
+    // Setup text and cursor spans
+    const textSpan = document.createElement("span");
+    const cursorSpan = document.createElement("span");
+
+    cursorSpan.textContent = "|";
+    cursorSpan.style.marginLeft = "2px";
+    cursorSpan.style.animation = "blink-fast 0.7s infinite";
+
+    typingElement.appendChild(textSpan);
+    typingElement.appendChild(cursorSpan);
+
+    function type() {
+      const currentPhrase = phrases[currentPhraseIndex];
+
+      if (!isDeleting && currentLetterIndex <= currentPhrase.length) {
+        textSpan.textContent = currentPhrase.substring(0, currentLetterIndex++);
+      }
+
+      if (isDeleting && currentLetterIndex >= 0) {
+        textSpan.textContent = currentPhrase.substring(0, currentLetterIndex--);
+      }
+
+      if (!isDeleting && currentLetterIndex > currentPhrase.length) {
+        isDeleting = true;
+        cursorSpan.style.animation = "blink-slow 1.2s infinite"; // Slow blink while paused
+        setTimeout(type, 1200);
+        return;
+      }
+
+      if (isDeleting && currentLetterIndex < 0) {
+        isDeleting = false;
+        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+        cursorSpan.style.animation = "blink-fast 0.7s infinite"; // Fast blink during typing
+        setTimeout(type, 300);
+        return;
+      }
+
+      setTimeout(type, isDeleting ? 50 : 80);
     }
 
-    if (!isDeleting && currentLetterIndex > currentPhrase.length) {
-      isDeleting = true;
-      setTimeout(type, 1000); // Pause after full phrase
-      return;
-    }
-
-    if (isDeleting && currentLetterIndex < 0) {
-      isDeleting = false;
-      currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-      setTimeout(type, 300); // Pause before next phrase
-      return;
-    }
-
-    setTimeout(type, isDeleting ? 50 : 100);
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(type, 500);
-  });
-</script>
-
-<style>
-  @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-</style>
-
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(type, 500);
+    });
+  </script>
 
 </body>
 </html>
