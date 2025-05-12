@@ -155,45 +155,64 @@
     </footer>
   </div>
 
-  <script>
-    function toggleMode() {
-      document.body.classList.toggle('light');
+<script>
+  function toggleMode() {
+    document.body.classList.toggle('light');
+  }
+
+  const phrases = ["Senior Security Engineer", "Fiction Writer", "Dog Enthusiast"];
+  const typingElement = document.getElementById("typing");
+  let currentPhraseIndex = 0;
+  let currentLetterIndex = 0;
+  let isDeleting = false;
+  let typingSpeed = 100;
+
+  // Create and style the blinking cursor
+  const cursor = document.createElement("span");
+  cursor.textContent = " |"; // Space before for breathing room
+  cursor.style.animation = "blink 1s infinite";
+  typingElement.appendChild(cursor);
+
+  function type() {
+    const currentPhrase = phrases[currentPhraseIndex];
+
+    if (!isDeleting && currentLetterIndex <= currentPhrase.length) {
+      typingElement.firstChild.textContent = currentPhrase.substring(0, currentLetterIndex++);
     }
 
-    // Typing Effect
-    const phrases = ["Senior Security Engineer", "Fiction Writer", "Dog Enthusiast"];
-    const typingElement = document.getElementById("typing");
-    let currentPhraseIndex = 0;
-    let currentLetterIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 100;
-
-    function type() {
-      const currentPhrase = phrases[currentPhraseIndex];
-      if (isDeleting) {
-        typingElement.textContent = currentPhrase.substring(0, currentLetterIndex--);
-      } else {
-        typingElement.textContent = currentPhrase.substring(0, currentLetterIndex++);
-      }
-
-      if (!isDeleting && currentLetterIndex === currentPhrase.length) {
-        isDeleting = true;
-        typingSpeed = 1500; // Pause before deleting
-      } else if (isDeleting && currentLetterIndex === 0) {
-        isDeleting = false;
-        currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
-        typingSpeed = 200; // Pause before typing next
-      } else {
-        typingSpeed = isDeleting ? 50 : 100;
-      }
-
-      setTimeout(type, typingSpeed);
+    if (isDeleting && currentLetterIndex >= 0) {
+      typingElement.firstChild.textContent = currentPhrase.substring(0, currentLetterIndex--);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(type, 500); // Initial delay
-    });
-  </script>
+    if (!isDeleting && currentLetterIndex > currentPhrase.length) {
+      isDeleting = true;
+      setTimeout(type, 1000); // Pause after full phrase
+      return;
+    }
+
+    if (isDeleting && currentLetterIndex < 0) {
+      isDeleting = false;
+      currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+      setTimeout(type, 300); // Pause before next phrase
+      return;
+    }
+
+    setTimeout(type, isDeleting ? 50 : 100);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(type, 500);
+  });
+</script>
+
+<style>
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+</style>
+
 
 </body>
 </html>
