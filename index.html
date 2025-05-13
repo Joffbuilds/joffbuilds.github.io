@@ -161,9 +161,10 @@
 
     <button class="toggle-mode" onclick="toggleMode()">Toggle Light/Dark Mode</button>
 
-    <footer>
-      &copy; 2025 Joffre Q.
-    </footer>
+<footer>
+  &copy; <span id="year"></span> Joffre Q.
+</footer>
+
   </div>
 
   <script>
@@ -221,6 +222,8 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       setTimeout(type, 500);
+// Set dynamic year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
     });
   </script>
 
